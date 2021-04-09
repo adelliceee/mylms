@@ -65,6 +65,7 @@ export const QuizGame = () => {
             setShowScore(true);
         }
     };
+    console.log(questions)
     return (
         <div className='app'>
             {showScore ? (
