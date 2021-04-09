@@ -1,5 +1,7 @@
-import React, {useState} from 'react'
-
+import React, {useContext, useState} from 'react'
+import {useHttp} from '../hooks/http.hook'
+import {AuthContext} from '../context/AuthContext'
+import {useHistory} from 'react-router-dom'
 
 class Questions {
     constructor(questionText,answerOptions) {
@@ -7,27 +9,19 @@ class Questions {
         this.answerOptions = [answerOptions];
     }
 }
+let questions = [
+    {
+        questionText: '',
+        answerOptions: [],
+    },
+];
 
 
 
 export const QuizGameCreator = () => {
-    let questions = [
-        {
-            questionText: '',
-            answerOptions: [],
-        },
-    ];
-
-
-    const [q,setQ] = useState(
-        [
-            {
-                questionText: '',
-                answerOptions: [],
-            }
-        ]
-    )
-
+    const history = useHistory()
+    const auth = useContext(AuthContext)
+    const {request} =  useHttp()
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [newQuestion,setNewQuestion] = useState({
@@ -142,6 +136,20 @@ export const QuizGameCreator = () => {
 
     }
 
+    const pressSaveQuiz = async () => {
+
+        try {
+            const data = await request('/api/quiz/generate', 'POST', {questions},
+                {Authorization: `Bearer ${auth.token}`})
+            console.log(data)
+            //history.push(`/quiz_detail/${data._id}`)
+        } catch (e) {
+            console.log('ERORRRR')
+        }
+
+
+    }
+
 
     const handleAnswerOptionClick = (isCorrect) => {
         if (isCorrect) {
@@ -211,6 +219,19 @@ export const QuizGameCreator = () => {
                 </>
 
         </div>
+
+            <button style={{
+                marginRight: "auto",
+                marginLeft: "auto",
+                marginTop: "1rem",
+                width:"15rem",
+                textAlign:"center"
+
+            }}
+            onClick={pressSaveQuiz}
+            >
+                Save this quiz
+            </button>
 
         </div>
     );

@@ -1,19 +1,21 @@
 const {Router} = require('express')
 const Quiz = require('../models/Quiz')
-const Question = require('../models/Question')
 const auth = require('../middleware/auth.middleware')
 const router = Router()
 
 router.post('/generate', auth, async (req, res) => {
   try {
 
-    const {quiz_name,questions} = req.body
+    const {questions} = req.body
+
+    const quiz_name = questions[0].questionText
+
 
     const quiz = new Quiz({
       quiz_name,questions, owner: req.user.userId
     })
 
-
+    console.log(quiz)
     await quiz.save()
 
     res.status(201).json({ quiz })

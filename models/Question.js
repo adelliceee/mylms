@@ -1,10 +1,11 @@
 const {Schema, model, Types} = require('mongoose')
 
+
+
 const schema = new Schema({
-    questionText: String,
-    answerOptions: {
-        answerText:String,
-        isCorrect:Boolean
+    constructor(questionText,answerOptions) {
+        this.questionText = questionText;
+        this.answerOptions = [answerOptions];
     }
 })
 
