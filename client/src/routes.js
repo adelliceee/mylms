@@ -6,6 +6,7 @@ import {QuizDetailPage} from './pages/QuizDetailPage'
 import {HomePage} from './pages/HomePage'
 import {AuthPage} from './pages/AuthPage'
 import {LessonsPage} from "./pages/LessonsPage";
+import {QuizesPage} from "./pages/QuizesPage";
 import {QuizGame} from "./pages/QuizGame";
 import {QuizGameCreator} from "./pages/QuizGameCreator";
 
@@ -35,7 +36,9 @@ export const useRoutes = isAuthenticated => {
                 <Route path="/quiz_detail/:id">
                     <QuizDetailPage />
                 </Route>
-
+                <Route path="/quizes" exact>
+                    <QuizesPage/>
+                </Route>
                 <Route path="/quizcreator">
                     <QuizGameCreator />
                 </Route>

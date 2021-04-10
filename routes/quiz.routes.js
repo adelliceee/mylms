@@ -5,9 +5,9 @@ const router = Router()
 
 router.post('/generate', auth, async (req, res) => {
   try {
-    const {questions} = req.body
+    const {questions,quiz_name} = req.body
 
-    const quiz_name = questions[0].questionText
+    //const quiz_name = questions[0].questionText
 
     const quiz = new Quiz({
       quiz_name,
