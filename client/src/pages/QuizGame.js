@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom'
 import {useHttp} from '../hooks/http.hook'
 import {AuthContext} from '../context/AuthContext'
 import {Loader} from '../components/Loader'
-import {contextsKey} from "express-validator/src/base";
+
 
 export const QuizGame = () => {
     const auth = useContext(AuthContext)
@@ -75,5 +75,5 @@ export const QuizGame = () => {
         </div>
     );
 
-    return null;
+
 }

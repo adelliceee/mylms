@@ -36,8 +36,7 @@ export const QuizGameCreator = () => {
         }
 
     )
-    const [showScore, setShowScore] = useState(false);
-    const [score, setScore] = useState(0);
+
     const handleChange = (i) => (e) => {
         setNewAnswer({
             ...newAnswer,
@@ -66,7 +65,7 @@ export const QuizGameCreator = () => {
         }
 
         const answersArray = [1,1,1,1].map((item, index) => ({
-            answerText: newAnswer.answers[0]?.answerText,
+            answerText: newAnswer.answers[index]?.answerText,
             isCorrect: correctNum === index,
         }));
 
@@ -85,7 +84,7 @@ export const QuizGameCreator = () => {
             const data = await request('/api/quiz/generate', 'POST', {questions: currentQuestion},
                 {Authorization: `Bearer ${auth.token}`})
             console.log(data)
-            //history.push(`/quiz_detail/${data._id}`)
+            history.push(`/quiz_detail/${data.quiz._id}`)
         } catch (e) {
             console.log('ERORRRR')
         }
