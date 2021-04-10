@@ -66,7 +66,7 @@ export const QuizGameCreator = () => {
         }
 
         const answersArray = [1,1,1,1].map((item, index) => ({
-            answerText: newAnswer.answers[0]?.answerText,
+            answerText: newAnswer.answers[index]?.answerText,
             isCorrect: correctNum === index,
         }));
 
