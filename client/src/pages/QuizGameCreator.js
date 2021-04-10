@@ -3,54 +3,36 @@ import {useHttp} from '../hooks/http.hook'
 import {AuthContext} from '../context/AuthContext'
 import {useHistory} from 'react-router-dom'
 
-class Questions {
-    constructor(questionText,answerOptions) {
-        this.questionText = questionText;
-        this.answerOptions = [answerOptions];
-    }
-}
-let questions = [
-    {
-        questionText: '',
-        answerOptions: [],
-    },
-];
-
-
-
 export const QuizGameCreator = () => {
     const history = useHistory()
     const auth = useContext(AuthContext)
     const {request} =  useHttp()
 
-    const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [currentQuestion, setCurrentQuestion] = useState([]);
     const [newQuestion,setNewQuestion] = useState({
         question:''
     })
 
-
     const [newAnswerCorrect,setNewAnswerCorrect] = useState(0)
 
-
     const [newAnswer,setNewAnswer] = useState({
+            answers: [{
+                answerText:'',
+                isCorrect:false
+            }
+                ,{
+                    answerText:'',
+                    isCorrect:false
+                }
+                ,{
+                    answerText:'',
+                    isCorrect:false
+                }, {
+                    answerText:'',
+                    isCorrect: false
+                }
 
-        answers: [{
-            answerText:'',
-            isCorrect:false
-        }
-        ,{
-            answerText:'',
-            isCorrect:false
-        }
-        ,{
-            answerText:'',
-            isCorrect:false
-        }, {
-            answerText:'',
-            isCorrect: false
-        }
-
-        ]
+            ]
         }
 
     )
@@ -83,95 +65,40 @@ export const QuizGameCreator = () => {
             return
         }
 
-        for (let i = 0; i < newAnswer.answers.length; i++) { // выведет 0, затем 1, затем 2
-            if (newAnswer.answers[i].answerText === ""){
-                return
-            }
-        }
-
-        const answArray = [
-            {
-                answerText: newAnswer.answers[0]?.answerText, isCorrect: false
-            },
-            {
-                answerText: newAnswer.answers[1]?.answerText, isCorrect: false
-            },
-            {
-                answerText: newAnswer.answers[2]?.answerText, isCorrect: false
-            },
-            {
-                answerText: newAnswer.answers[3]?.answerText, isCorrect: false
-            }
-        ]
-        answArray[correctNum].isCorrect = true
-
-        if (currentQuestion === 0){
-
-
-            questions[0] =  new Questions(
-                newQuestion.question,
-                answArray
-            )
-            const nextQuestion = currentQuestion + 1;
-            setCurrentQuestion(nextQuestion)
-            console.log("Is 0 element")
-            console.log(questions)
-            return questions
-
-        }
-
-
-        questions[currentQuestion] =  new Questions(
-            newQuestion.question,
-            answArray
-        )
-        const nextQuestion = currentQuestion + 1;
-        setCurrentQuestion(nextQuestion)
-        console.log("Is", currentQuestion, "element")
-        console.log(questions)
-        return questions
+        const answersArray = [1,1,1,1].map((item, index) => ({
+            answerText: newAnswer.answers[0]?.answerText,
+            isCorrect: correctNum === index,
+        }));
 
 
 
-
+        setCurrentQuestion([
+            ...currentQuestion, {
+                questionText: newQuestion.question,
+                answerOptions: answersArray,
+            }])
     }
 
     const pressSaveQuiz = async () => {
-
         try {
-            const data = await request('/api/quiz/generate', 'POST', {questions},
+            console.log(currentQuestion);
+            const data = await request('/api/quiz/generate', 'POST', {questions: currentQuestion},
                 {Authorization: `Bearer ${auth.token}`})
             console.log(data)
             //history.push(`/quiz_detail/${data._id}`)
         } catch (e) {
             console.log('ERORRRR')
         }
-
-
     }
 
-
-    const handleAnswerOptionClick = (isCorrect) => {
-        if (isCorrect) {
-            setScore(score + 1);
-        }
-
-        const nextQuestion = currentQuestion + 1;
-        if (nextQuestion < questions.length) {
-            setCurrentQuestion(nextQuestion);
-        } else {
-            setShowScore(true);
-        }
-    };
+    console.log(currentQuestion);
     return (
         <div>
-        <div className='app' >
-
-                <>
+            <div className='app' >
 
                     <div className='question-section'>
                         <div className='question-count'>
-                            <span >Question {currentQuestion + 1}</span>
+                            <span >Question {currentQuestion.length + 1}</span>
                         </div>
                         <div className='question-text'>
                             <input style={{color: 'white'}}
@@ -188,22 +115,22 @@ export const QuizGameCreator = () => {
                                 </button>
                             </div>
 
-                            <div class="input-field col s12" style={{marginRight: 15}}>
-                                    <select className="browser-default"
-                                            name = "correct"
-                                            onChange={event => setNewAnswerCorrect(event.target.value)}
-                                    >
-                                        <option value="" disabled selected>Choose your option</option>
-                                        <option value="0">{newAnswer.answers[0].answerText}</option>
-                                        <option value="1">{newAnswer.answers[1]?.answerText}</option>
-                                        <option value="2">{newAnswer.answers[2]?.answerText}</option>
-                                        <option value="3">{newAnswer.answers[3]?.answerText}</option>
+                            <div className="input-field col s12" style={{marginRight: 15}}>
+                                <select className="browser-default"
+                                        name = "correct"
+                                        onChange={event => setNewAnswerCorrect(event.target.value)}
+                                >
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="0">{newAnswer.answers[0].answerText}</option>
+                                    <option value="1">{newAnswer.answers[1]?.answerText}</option>
+                                    <option value="2">{newAnswer.answers[2]?.answerText}</option>
+                                    <option value="3">{newAnswer.answers[3]?.answerText}</option>
 
-                                    </select>
+                                </select>
 
-                                </div>
+                            </div>
 
-                    </div>
+                        </div>
                     </div>
 
                     <div className='answer-section'>
@@ -215,10 +142,7 @@ export const QuizGameCreator = () => {
                         ))}
                     </div>
 
-
-                </>
-
-        </div>
+            </div>
 
             <button style={{
                 marginRight: "auto",
@@ -228,7 +152,7 @@ export const QuizGameCreator = () => {
                 textAlign:"center"
 
             }}
-            onClick={pressSaveQuiz}
+                    onClick={pressSaveQuiz}
             >
                 Save this quiz
             </button>

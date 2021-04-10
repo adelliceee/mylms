@@ -5,14 +5,14 @@ const router = Router()
 
 router.post('/generate', auth, async (req, res) => {
   try {
-
     const {questions} = req.body
 
     const quiz_name = questions[0].questionText
 
-
     const quiz = new Quiz({
-      quiz_name,questions, owner: req.user.userId
+      quiz_name,
+      questions,
+      owner: req.user.userId,
     })
 
     console.log(quiz)
@@ -20,7 +20,7 @@ router.post('/generate', auth, async (req, res) => {
 
     res.status(201).json({ quiz })
   } catch (e) {
-    res.status(500).json({ message: 'Something went wrong, try again' })
+    res.status(500).json({ message: e })
   }
 })
 
@@ -29,7 +29,7 @@ router.get('/', auth, async (req, res) => {
     const quizes = await Quiz.find({ owner: req.user.userId })
     res.json(quizes)
   } catch (e) {
-    res.status(500).json({ message: 'Something went wrong, try again' })
+    res.status(500).json({ message: e })
   }
 })
 
@@ -38,7 +38,7 @@ router.get('/:id', auth, async (req, res) => {
     const quiz = await Quiz.findById(req.params.id)
     res.json(quiz)
   } catch (e) {
-    res.status(500).json({ message: 'Something went wrong, try again' })
+    res.status(500).json({ message: e })
   }
 })
 
