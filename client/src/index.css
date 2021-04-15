@@ -24,6 +24,7 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
 }
 
 
@@ -122,5 +123,6 @@ button:focus {
 button svg {
     margin-right: 5px;
 }
+
 
 

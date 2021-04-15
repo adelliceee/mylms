@@ -1,6 +1,7 @@
 import React from 'react'
 import {Switch, Route, Redirect} from 'react-router-dom'
 import {CreatePage} from './pages/CreatePage'
+import {CreateAssignmentsPage} from './pages/CreateAssignmentsPage'
 import {DetailPage} from './pages/DetailPage'
 import {QuizDetailPage} from './pages/QuizDetailPage'
 import {HomePage} from './pages/HomePage'
@@ -22,6 +23,9 @@ export const useRoutes = isAuthenticated => {
                 </Route>
                 <Route path="/create" exact>
                     <CreatePage />
+                </Route>
+                <Route path="/createassignments" exact>
+                    <CreateAssignmentsPage />
                 </Route>
                 <Route path="/detail/:id">
                     <DetailPage />

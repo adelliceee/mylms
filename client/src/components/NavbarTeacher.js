@@ -11,12 +11,17 @@ export const NavbarTeacher = () => {
     auth.logout()
     history.push('/')
   }
+
+
     return(
+
+
         <nav>
           <div className="nav-wrapper blue darken-1" style={{ padding: '0 2rem' }}>
             <span className="brand-logo">Teacher panel</span>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li><NavLink to="/create">Create lessons</NavLink></li>
+              <li><NavLink to="/createassignments">Create Assignments</NavLink></li>
               <li><NavLink to="/lessons">Lessons</NavLink></li>
               <li><NavLink to="/quizes">Quizes</NavLink></li>
               <li><NavLink to="/quizcreator">Create QuizGame</NavLink></li>
@@ -25,7 +30,10 @@ export const NavbarTeacher = () => {
             </ul>
           </div>
         </nav>
-    )
+
+
+
+  )
 
 
 
